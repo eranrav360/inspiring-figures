@@ -945,7 +945,7 @@ export const FIGURES = [
     years: "1940 – 2022",
     quote: "הכדורגל הוא כמו דת בשבילי. אני סוגד לו. הוא גורם לי לאקסטזה ולעינויים.",
     story: "אדסון ארנטס דו נסימנטו — פלה — נולד בעוני קיצוני בברזיל ושיחק כדורגל בכדור גרב ממולא. בגיל 17 זכה עם ברזיל במונדיאל 1958 — הצעיר ביותר שזכה בגביע העולם. זכה בשלושה גביעי עולם (1958, 1962, 1970), כבש 1,281 שערים בקריירה, והפך לסמל לאומי ברזילאי ושגריר עולמי לכדורגל ולאנושות.",
-    wikiImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Pele_celebrating_1000th_goal.jpg/400px-Pele_celebrating_1000th_goal.jpg",
+    wikiImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Pele_con_brasil_%28cropped%29.jpg/400px-Pele_con_brasil_%28cropped%29.jpg",
     funFact: "ב-1969 הכריזה ניגריה על שביתת נשק של 48 שעות במלחמת האזרחים שלה — כדי ששני הצדדים יוכלו לצפות בפלה משחק. פלה ויכולתו לאחד אנשים היו כה אגדיות, שאפילו מלחמות עצרו לרגע.",
     stories: [
       {
