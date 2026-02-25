@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { FIGURES } from "./data.js";
 
 const CATEGORIES = ["הכל", "מדע וטכנולוגיה", "פוליטיקה ומנהיגות", "אמנות וספרות", "ספורט"];
@@ -8,7 +8,19 @@ export default function App() {
   const [activeCategory, setActiveCategory] = useState("הכל");
   const [selected, setSelected] = useState(null);
   const [imgError, setImgError] = useState({});
-  const [storyModal, setStoryModal] = useState(null); // { title, description, index }
+  const [storyModal, setStoryModal] = useState(null);
+  const [showPurim, setShowPurim] = useState(false);
+  const [dontShowAgain, setDontShowAgain] = useState(false);
+
+  useEffect(() => {
+    const hidden = localStorage.getItem("purim-dismissed");
+    if (!hidden) setShowPurim(true);
+  }, []);
+
+  function closePurim() {
+    if (dontShowAgain) localStorage.setItem("purim-dismissed", "1");
+    setShowPurim(false);
+  }
 
   const filtered = useMemo(() => {
     return FIGURES.filter(f => {
@@ -261,6 +273,114 @@ export default function App() {
           INSPIRING FIGURES · {FIGURES.length} CHARACTERS
         </div>
       </div>
+
+      {/* Purim Greeting Modal */}
+      {showPurim && (
+        <div style={{
+          position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          zIndex: 2000, padding: 24, backdropFilter: "blur(6px)"
+        }}>
+          <div style={{
+            background: "#FFFDF5",
+            border: "2px solid #E8A020",
+            borderRadius: 20,
+            maxWidth: 420, width: "100%",
+            padding: "40px 36px 32px",
+            textAlign: "center",
+            position: "relative",
+            boxShadow: "0 24px 80px rgba(232,160,32,0.25), 0 0 0 6px rgba(232,160,32,0.08)",
+            fontFamily: "'Rubik', sans-serif",
+            direction: "rtl",
+          }}>
+
+            {/* Floating confetti emojis */}
+            <style>{`
+              @keyframes float1 { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-10px) rotate(15deg)} }
+              @keyframes float2 { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-14px) rotate(-10deg)} }
+              @keyframes float3 { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-8px) rotate(20deg)} }
+              @keyframes popIn { from{opacity:0;transform:scale(0.7)} to{opacity:1;transform:scale(1)} }
+              .purim-modal { animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both; }
+            `}</style>
+
+            {/* Top icons row */}
+            <div style={{ display: "flex", justifyContent: "center", gap: 12, marginBottom: 20, fontSize: "2.2rem" }}>
+              <span style={{ animation: "float1 2.5s ease-in-out infinite" }}>🎭</span>
+              <span style={{ animation: "float2 2.8s ease-in-out infinite 0.3s" }}>🎪</span>
+              <span style={{ animation: "float3 2.3s ease-in-out infinite 0.6s" }}>🥳</span>
+              <span style={{ animation: "float2 2.6s ease-in-out infinite 0.1s" }}>🍭</span>
+              <span style={{ animation: "float1 3s ease-in-out infinite 0.4s" }}>🎭</span>
+            </div>
+
+            {/* Subtitle */}
+            <div style={{ fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: "#E8A020", marginBottom: 14, fontWeight: 600 }}>
+              משלוח מנות לפורים
+            </div>
+
+            {/* Main greeting */}
+            <h2 style={{
+              fontSize: "2rem", fontWeight: 900, color: "#1A1A1A",
+              lineHeight: 1.2, marginBottom: 8
+            }}>
+              פורים שמח ארז! 🎉
+            </h2>
+
+            <p style={{ fontSize: "1.1rem", color: "#555", marginBottom: 6, fontWeight: 400, lineHeight: 1.5 }}>
+              מאת
+            </p>
+            <p style={{ fontSize: "1.3rem", fontWeight: 700, color: "#B07010", marginBottom: 24 }}>
+              אהד רביב
+            </p>
+
+            {/* Divider */}
+            <div style={{ width: 60, height: 2, background: "linear-gradient(90deg, transparent, #E8A020, transparent)", margin: "0 auto 24px" }} />
+
+            {/* Message */}
+            <p style={{ fontSize: "0.95rem", color: "#777", lineHeight: 1.7, marginBottom: 28, fontWeight: 300 }}>
+              קיבלת מתנה — אוסף של דמויות מעוררות השראה מכל תחומי החיים.
+              <br />חג שמח! 🎊
+            </p>
+
+            {/* Bottom icons */}
+            <div style={{ fontSize: "1.6rem", marginBottom: 28, letterSpacing: 8 }}>
+              🍡 🎁 🃏 🎈 🍡
+            </div>
+
+            {/* Don't show again checkbox */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 20 }}>
+              <input
+                type="checkbox"
+                id="purim-no-show"
+                checked={dontShowAgain}
+                onChange={e => setDontShowAgain(e.target.checked)}
+                style={{ width: 16, height: 16, cursor: "pointer", accentColor: "#E8A020" }}
+              />
+              <label htmlFor="purim-no-show" style={{ fontSize: "0.85rem", color: "#999", cursor: "pointer", userSelect: "none" }}>
+                אל תציג את זה בפעם הבאה
+              </label>
+            </div>
+
+            {/* CTA Button */}
+            <button
+              onClick={closePurim}
+              style={{
+                background: "linear-gradient(135deg, #E8A020, #C07010)",
+                border: "none", borderRadius: 10,
+                padding: "13px 40px", fontSize: "1rem",
+                color: "#FFFFFF", fontWeight: 700,
+                cursor: "pointer", fontFamily: "inherit",
+                boxShadow: "0 4px 16px rgba(232,160,32,0.35)",
+                transition: "transform 0.15s, box-shadow 0.15s",
+                width: "100%"
+              }}
+              onMouseEnter={e => { e.target.style.transform = "translateY(-2px)"; e.target.style.boxShadow = "0 8px 24px rgba(232,160,32,0.45)"; }}
+              onMouseLeave={e => { e.target.style.transform = "translateY(0)"; e.target.style.boxShadow = "0 4px 16px rgba(232,160,32,0.35)"; }}
+            >
+              לאפליקציה 🎭
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Story Modal */}
       {storyModal && (
